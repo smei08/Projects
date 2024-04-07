@@ -1,0 +1,16 @@
+- structure first, section by section
+- style section by section
+- after basic structure and style added JS
+- found api key and url, stored in variable 
+- write out async function
+
+
+LEVEL UP:
+    - be able to change b/w celsius and fahrenheit
+    - background changes depending on weather/time of day
+    - hourly display with icon
+    - weekly display with icon
+    - feels like
+    - rain prediction
+    - be able to search with enter button or clicking 
+    - city suggestion
