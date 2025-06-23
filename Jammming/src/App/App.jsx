@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import './App.css';
 import SearchBar from '../components/SearchBar';
@@ -11,7 +11,7 @@ function App() {
   const [searchSong, setSongSearch] = useState('');
   const [searchResults, setSearchResult] = useState([]);
   const [playlist, setPlaylist] = useState([]);
-  // const [token, setToken] = useState('');
+  const [token, setToken] = useState('');
 
   const handleSongSearch = (e) => {
     setSongSearch(e.target.value);
@@ -41,6 +41,24 @@ function App() {
   const exportPlaylist = () => {
     console.log('Exporting playlist!', playlist);
   };
+
+  useEffect (() => {
+    const hash = window.location.hash;
+    let storedToken = window.localStorage.getItem('');
+
+    if (!storedToken && hash) {
+      const tokenMatch = hash.match(/access_token=([^&]*)/);
+      const newToken = tokenMatch && tokenMatch[1] 
+
+      if (newToken) {
+        window.localStorage,setItem('spotify_token', newToken);
+        setToken(newToken);
+        window.location.hash = '';
+      }
+    } else if (storedToken) {
+      setToken(storedToken);
+    }
+  })
 
   return (
     <>
