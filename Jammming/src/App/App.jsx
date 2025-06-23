@@ -5,7 +5,7 @@ import SearchBar from '../components/SearchBar';
 import Tracklist from '../components/Tracklist';
 import Track from '../components/Track';
 import Playlist from '../components/playlist';
-// import { AUTH_ENDPOINT } from '../components/SpotifyAuth';
+import { AUTH_ENDPOINT } from '../components/SpotifyAuth';
 
 function App() {
   const [searchSong, setSongSearch] = useState('');
@@ -17,7 +17,30 @@ function App() {
     setSongSearch(e.target.value);
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = async() => {
+    if (!token || !searchSong) return;
+
+    try {
+      const response = await fetch(
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(searchSong)}&type=track&limit=10`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.json();
+      const tracks = data.tracks.items.map((track) => ({
+        id: track.id,
+        title: track.name,
+        artist: track.artists[0].name,
+        album: track.album.name,
+      }));
+
+      setSearchResult(tracks);
+    } catch(error) {
+      console.log(`Error fetching song search from Spotify: `, error);
+    }
     console.log('Searching for: ', searchSong);
   };
 
@@ -44,21 +67,21 @@ function App() {
 
   useEffect (() => {
     const hash = window.location.hash;
-    let storedToken = window.localStorage.getItem('');
+    let storedToken = window.localStorage.getItem('spotify_token');
 
     if (!storedToken && hash) {
       const tokenMatch = hash.match(/access_token=([^&]*)/);
       const newToken = tokenMatch && tokenMatch[1] 
 
       if (newToken) {
-        window.localStorage,setItem('spotify_token', newToken);
+        window.localStorage.setItem('spotify_token', newToken);
         setToken(newToken);
         window.location.hash = '';
       }
     } else if (storedToken) {
       setToken(storedToken);
     }
-  })
+  }),[]
 
   return (
     <>
@@ -81,7 +104,9 @@ function App() {
         />
       </div>
       <div>
-        <button>Log in with Spotify</button>
+        <a href={ AUTH_ENDPOINT }>
+          <button>Log in with Spotify</button>
+        </a>
       </div> 
     </>
   )

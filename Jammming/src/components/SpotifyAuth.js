@@ -7,4 +7,4 @@ const encodedRedirect = encodeURIComponent(redirectURL);
 const encodedScope = encodeURIComponent(scope);
 
 
-const AUTH_ENDPOINT = `${base}?client_id=${clientID}&response_type=token&redirect_uri=${encodedRedirect}&scope=${encodedScope}`;
+export const AUTH_ENDPOINT = `${base}?client_id=${clientID}&response_type=token&redirect_uri=${encodedRedirect}&scope=${encodedScope}`;

@@ -1,11 +1,11 @@
 import React from 'react';
 
-function SearchBar({searchSong, searchUpdate, handlesearchSubmit}) {
+function SearchBar({searchSong, searchUpdate, handleSearchSubmit}) {
     console.log('search bar loading...');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        handlesearchSubmit();
+        handleSearchSubmit();
     }
 
     return (
@@ -13,11 +13,11 @@ function SearchBar({searchSong, searchUpdate, handlesearchSubmit}) {
         <form onSubmit={handleSubmit}>
             <input 
                 type='text'
-                id='songSearch'
                 value={searchSong}
                 onChange={searchUpdate}
+                placeholder='Search songs or artists'
             ></input>
-            <button type='submit'>Search</button>
+            <button type='submit' onClick={handleSearchSubmit}>Search</button>
         </form>
         <p>searchbar is working...</p>
        </div>
